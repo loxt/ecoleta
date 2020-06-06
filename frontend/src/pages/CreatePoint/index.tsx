@@ -1,9 +1,9 @@
-import React, { useEffect, useState, ChangeEvent } from 'react';
+import React, { useEffect, useState, ChangeEvent, FormEvent } from 'react';
 
 import logo from '../../assets/logo.svg';
 
 import './styles.css';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { FiArrowLeft } from 'react-icons/fi';
 
 import { Map, TileLayer, Marker } from 'react-leaflet';
@@ -26,6 +26,8 @@ interface IBGECityResponse {
 }
 
 const CreatePoint = () => {
+  const history = useHistory();
+
   const [items, setItems] = useState<Item[]>([]);
   const [ufs, setUfs] = useState<string[]>([]);
   const [cities, setCities] = useState<string[]>([]);
@@ -103,6 +105,32 @@ const CreatePoint = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   }
 
+  async function handleSubmit(e: FormEvent) {
+    e.preventDefault();
+
+    const { name, email, whatsapp } = formData;
+    const uf = selectedUf;
+    const city = selectedCity;
+    const [latitude, longitude] = selectedPosition;
+    const items = selectedItems;
+
+    const data = {
+      name,
+      email,
+      whatsapp,
+      uf,
+      city,
+      latitude,
+      longitude,
+      items,
+    };
+
+    await api.post('points', data);
+
+    alert('Ponto de coleta criado!');
+    history.push('/');
+  }
+
   function handleSelectItem(id: number) {
     const alreadySelected = selectedItems.findIndex(item => item === id);
 
@@ -125,7 +153,7 @@ const CreatePoint = () => {
         </Link>
       </header>
 
-      <form>
+      <form onSubmit={handleSubmit}>
         <h1>Cadastro do <br/> ponto de coleta</h1>
 
         <fieldset>
