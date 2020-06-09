@@ -3,7 +3,8 @@ import { StatusBar } from 'react-native';
 import { Roboto_400Regular, Roboto_500Medium } from '@expo-google-fonts/roboto';
 import { Ubuntu_700Bold, useFonts } from '@expo-google-fonts/ubuntu';
 import { AppLoading } from 'expo';
-import Home from './src/pages/Home';
+
+import Routes from './src/routes';
 
 const App: React.FC = () => {
   const [fontsLoaded] = useFonts({
@@ -19,7 +20,7 @@ const App: React.FC = () => {
   return (
     <>
       <StatusBar backgroundColor="#fff" barStyle="dark-content" />
-      <Home />
+      <Routes />
     </>
   );
 };
